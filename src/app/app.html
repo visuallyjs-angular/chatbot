@@ -1,0 +1,12 @@
+<div class="vjs-chatbot">
+	<div class="vjs-chatbot-rhs">
+  		<app-palette/>
+		<app-inspector/>
+	</div>
+  <vjs-surface url="/dataset.json" [viewOptions]="viewOptions" [renderOptions]="renderOptions" [modelOptions]="modelOptions">
+    <vjs-controls/>
+    <vjs-miniview [typeFunction]="miniviewType"/>
+  </vjs-surface>
+
+
+</div>

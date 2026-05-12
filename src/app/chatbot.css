@@ -1,0 +1,391 @@
+:root {
+
+    --bg-chatbot-start: #2B6CB0;
+    --bg-chatbot-end: #2F855A;
+    --bg-chatbot-message: #4299E1;
+    --bg-chatbot-choice: #408391;
+    --bg-chatbot-input: #3e47a8;
+    --bg-chatbot-test: #85408e;
+
+    --bg-chatbot-delete: #E53E3E;
+    --bg-chatbot-choice-option: #f8f8f8;
+    --bg-chatbot-test-option: #f8f8f8;
+}
+
+.vjs-chatbot {
+    display:flex;
+    height:100vh;
+    font-family: sans-serif;
+}
+
+.vjs-chatbot-canvas {
+    flex-grow:1;
+    position: relative;
+}
+
+.vjs-chatbot-rhs {
+    padding:0.5rem;
+    border-left:1px solid #CCC;
+    flex-basis: 250px;
+}
+
+vjs-controls {
+    position:absolute;
+    left:1rem;
+    top:1rem;
+}
+
+vjs-miniview {
+    position:absolute;
+    bottom:1rem;
+    left:1rem;
+}
+
+[vjs-miniview-type='choice'] {
+    background-color: var(--bg-chatbot-choice);
+}
+
+[vjs-miniview-type='message'] {
+    background-color: var(--bg-chatbot-message);
+}
+
+[vjs-miniview-type='input'] {
+    background-color: var(--bg-chatbot-input);
+}
+
+[vjs-miniview-type='start'] {
+    background-color: var(--bg-chatbot-start);
+}
+
+[vjs-miniview-type='end'] {
+    background-color: var(--bg-chatbot-end);
+}
+
+[vjs-miniview-type='test'] {
+    background-color: var(--bg-chatbot-test);
+}
+
+
+
+/* the palette container */
+.vjs-chatbot-palette {
+    display: flex;
+    align-items: center;
+    background-color: #f2f0ee;
+    padding:0.75rem;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    justify-content: space-around;
+}
+
+/**
+    Items in the palette. Also applies to items that are being dragged from the palette.
+ */
+.vjs-chatbot-palette-item {
+    width: 5rem;
+    padding: 0.35rem;
+    border-radius: 5px;
+    text-align: center;
+    border:1px solid;
+    cursor:move;
+}
+
+.vjs-chatbot-palette-item[data-vjs-type='choice'] {
+    border-right: 10px solid var(--bg-chatbot-choice);
+}
+
+.vjs-chatbot-palette-item[data-vjs-type='message'] {
+    border-right: 10px solid var(--bg-chatbot-message);
+}
+
+.vjs-chatbot-palette-item[data-vjs-type='input'] {
+    border-right: 10px solid var(--bg-chatbot-input);
+}
+
+.vjs-chatbot-palette-item[data-vjs-type='start'] {
+    border-right: 10px solid var(--bg-chatbot-start);
+}
+
+.vjs-chatbot-palette-item[data-vjs-type='end'] {
+    border-right: 10px solid var(--bg-chatbot-end);
+}
+
+.vjs-chatbot-palette-item[data-vjs-type='test'] {
+    border-right: 10px solid var(--bg-chatbot-test);
+}
+
+/*
+    targets palette items when they are in the palette container (as opposed to being dragged onto the canvas, because when they are being dragged
+    onto the canvas their parent element is the document root).
+ */
+.vjs-chatbot-palette .vjs-chatbot-palette-item {
+    margin:0.25rem;
+}
+
+
+
+/* ------------------- edge styles -------------------------- */
+
+.vjs-connector {
+    z-index:9;
+}
+
+.vjs-connector-path {
+    stroke:black;
+    stroke-width: 2px;
+}
+
+.vjs-connector-outline {
+    stroke:transparent;
+    stroke-width: 20px;
+}
+
+.vjs-selected-connection {
+    z-index:12;
+}
+
+.vjs-connector-transient, .vjs-edge-relocating {
+    z-index:13;
+}
+
+.vjs-label-overlay {
+    z-index: 10;
+    background-color: white;
+    padding: 0.25rem;
+    outline: 1px solid;
+    border-radius: 5px;
+    min-width: 80px;
+    text-align: center;
+}
+
+/* -------------- node styles ------------------- */
+
+/**
+    Applied to all nodes. We set bg color and a z-index to put nodes above edges.
+ */
+.vjs-node {
+    z-index:10;
+    background-color: white;
+}
+
+.vjs-react-node:hover {
+    box-shadow:0 0 10px #999;
+}
+
+/**
+Assigned to nodes when they are being dragged or have just been dragged. We set a z-index to place them
+above other nodes.
+ */
+.vjs-node.vjs-most-recently-dragged, .vjs-node.vjs-element-dragging {
+    z-index:12;
+}
+
+/**
+ The handle used to drag an edge from certain nodes types. only visible on hover.
+ */
+.vjs-chatbot-connect {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    display:none;
+    transform: translate(-50%, 50%);
+    z-index:50;
+    background-color: white;
+    border:2px solid;
+}
+
+/**
+show connect handle on hover.
+ */
+.vjs-node:hover .vjs-chatbot-connect {
+    display:block;
+}
+
+/**
+delete button, visible only when element is selected.
+ */
+.vjs-delete {
+    position:absolute;
+    top:-1.5rem;
+    right:-1.5rem;
+    width:15px;
+    height:15px;
+    padding:2px;
+    font-size:11px;
+    border-radius:50%;
+    cursor:pointer;
+    color:white;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-chatbot-delete);
+    display:none;
+}
+
+.vjs-delete::after {
+    content:'x';
+}
+
+.vjs-selected-element .vjs-delete {
+    display:flex;
+}
+
+.vjs-chatbot-start, .vjs-chatbot-end {
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    color:white;
+    display:flex;
+    font-weight:700;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+}
+
+.vjs-chatbot-start {
+    background-color:var(--bg-chatbot-start);
+}
+
+.vjs-chatbot-end {
+    background-color:var(--bg-chatbot-end);
+}
+
+.vjs-chatbot-start::after {
+    content:'START';
+}
+
+.vjs-chatbot-end::after {
+    content:'END';
+}
+
+.vjs-chatbot-message, .vjs-chatbot-input, .vjs-chatbot-test, .vjs-chatbot-choice {
+    display: flex;
+    padding: 1rem;
+    border-radius: 5px;
+    border:2px solid;
+}
+
+.vjs-chatbot-test, .vjs-chatbot-choice {
+    padding:0;
+}
+
+.vjs-chatbot-message {
+    width: 170px;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    border-top: 25px solid var(--bg-chatbot-message);
+    border-color: var(--bg-chatbot-message);
+}
+
+.vjs-chatbot-message .vjs-chatbot-connect {
+    color: var(--bg-chatbot-message);
+}
+
+.vjs-chatbot-input {
+    width: 170px;
+    flex-direction: column;
+    border-top: 25px solid var(--bg-chatbot-input);
+    border-color: var(--bg-chatbot-input);
+}
+
+.vjs-chatbot-input .vjs-chatbot-connect {
+    color: var(--bg-chatbot-input);
+}
+
+.vjs-chatbot-input textarea {
+    margin-top: 5px;
+    resize: none;
+}
+
+.vjs-chatbot-choice {
+    width: 170px;
+    border-top: 25px solid var(--bg-chatbot-choice);
+    border-color: var(--bg-chatbot-choice);
+    flex-direction: column;
+}
+
+.vjs-chatbot-choice .vjs-chatbot-connect {
+    color: var(--bg-chatbot-choice);
+}
+
+.vjs-chatbot-test {
+    width: 170px;
+    border-top: 25px solid var(--bg-chatbot-test);
+    border-color: var(--bg-chatbot-test);
+    flex-direction: column;
+}
+
+.vjs-chatbot-choice-option {
+    display: flex;
+    align-items: center;
+    margin: 3px 0;
+    background-color: var(--bg-chatbot-choice-option);
+    padding: 5px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #30312e;
+    border-right:4px solid white;
+    border-left:4px solid white;
+}
+
+.vjs-chatbot-test .vjs-chatbot-choice-option {
+    background-color: var(--bg-chatbot-test-option);
+}
+
+.vjs-choice-add + .vjs-chatbot-choice-option {
+    margin-top:10px;
+}
+
+.vjs-choice-add, .vjs-test-add {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    color: white;
+    cursor: pointer;
+}
+
+.vjs-choice-add::after, .vjs-test-add::after {
+    content:'+'
+}
+
+.vjs-choice-delete {
+    margin-left:auto;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.vjs-choice-delete::after {
+    content:'x';
+}
+
+.vjs-drag-hover {
+    border-color: #0db4f4;
+    box-shadow:0 0 10px #bbb;
+}
+
+/* --------------- inspector styles ------------------- */
+
+.vjs-chatbot-inspector {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem;
+    background-color: #f2f0ee;
+    margin: 1rem 0;
+    border-radius: 10px;
+}
+
+.vjs-chatbot-inspector input[type='text'] {
+    height:40px;
+    margin:0.25rem 0;
+}
+
+.vjs-selected-element {
+    outline: 6px solid cornflowerblue;
+    outline-offset: 0.5rem;
+    z-index: 12;
+}
