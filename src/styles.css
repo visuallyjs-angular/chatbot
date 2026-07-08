@@ -14,3 +14,7 @@ app-root {
 vjs-surface {
   width:100%;
 }
+
+vjs-controls {
+    z-index:10;
+}
