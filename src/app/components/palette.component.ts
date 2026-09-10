@@ -5,7 +5,7 @@ import {
     PaletteComponent as VjsPaletteComponent,
     VisuallyJsModule
 } from "@visuallyjs/browser-ui-angular";
-import { ACTION_CHOICE, ACTION_INPUT, ACTION_MESSAGE, ACTION_TEST, nodeTypes } from "../constants";
+import { ACTION_AI, ACTION_CHOICE, ACTION_INPUT, ACTION_MESSAGE, ACTION_TEST, nodeTypes } from "../constants";
 import {BrowserElement} from "@visuallyjs/browser-ui";
 
 @Component({
@@ -46,6 +46,20 @@ export class ChatbotPaletteComponent {
         choices: [
           { id: "1", label: "Result 1" },
           { id: "2", label: "Result 2" },
+        ]
+      })
+    } else if (type === ACTION_AI) {
+      Object.assign(base, {
+        label: "Analyze & Respond",
+        model: "gpt-4o-mini",
+        systemPrompt: "You are a customer support triage assistant. Summarize the user issue and maintain a polite tone.",
+        userPrompt: "User input: {{last_user_message}}",
+        temperature: 0.7,
+        maxTokens: 256,
+        outputVariable: "ai_response",
+        choices: [
+          { id: "out_success", label: "On Success" },
+          { id: "out_error", label: "On Failure" }
         ]
       })
     }

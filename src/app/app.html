@@ -1,12 +1,10 @@
 <div class="vjs-chatbot">
-	<div class="vjs-chatbot-rhs">
-  		<app-palette/>
-		<app-inspector/>
-	</div>
-  <vjs-surface url="/dataset.json" [viewOptions]="viewOptions" [renderOptions]="renderOptions" [modelOptions]="modelOptions">
+  <vjs-surface [url]="url" [viewOptions]="viewOptions" [renderOptions]="renderOptions" [modelOptions]="modelOptions" class="vjs-chatbot-canvas">
     <vjs-controls/>
     <vjs-miniview [typeFunction]="miniviewType"/>
   </vjs-surface>
-
-
+  <div *ngIf="!hidePaletteAndInspector" class="vjs-chatbot-rhs">
+    <app-palette/>
+    <app-inspector/>
+  </div>
 </div>

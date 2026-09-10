@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { VisuallyJsModule } from "@visuallyjs/browser-ui-angular";
+import { CommonModule } from '@angular/common';
 
 import renderOptions from "./render-options"
 import viewOptions from "./view-options"
@@ -11,14 +12,16 @@ import { Node, Group} from "@visuallyjs/browser-ui"
 
 @Component({
   selector: 'app-root',
-  imports: [VisuallyJsModule, ChatbotPaletteComponent, ChatbotInspectorComponent],
+  imports: [VisuallyJsModule, ChatbotPaletteComponent, ChatbotInspectorComponent, CommonModule],
   templateUrl: './app.html'
 })
 export class App {
   renderOptions = renderOptions
   viewOptions= viewOptions
   modelOptions = modelOptions
-  url = "/dataset.json"
+  
+  @Input() url = "/dataset.json"
+  @Input() hidePaletteAndInspector = false
 
     /**
      * Assign a type to miniview elements, which then is picked up by the CSS and colors each one.

@@ -1,12 +1,13 @@
 import {AnchorLocations, BrowserElement, EdgeEventCallbackPayload, EVENT_TAP, NodeEventCallbackPayload,
     OverlayVisibility, PlainArrowOverlay, PortEventCallbackPayload} from "@visuallyjs/browser-ui";
-import {ACTION_CHOICE, ACTION_INPUT, ACTION_MESSAGE, ACTION_TEST, END, SELECTABLE, START} from "./constants";
+import {ACTION_AI, ACTION_CHOICE, ACTION_INPUT, ACTION_MESSAGE, ACTION_TEST, END, SELECTABLE, START} from "./constants";
 import {EndComponent} from "./components/end.component";
 import {StartComponent} from "./components/start.component";
 import {MessageComponent} from "./components/message.component";
 import {InputComponent} from "./components/input.component";
 import {ChoiceComponent} from "./components/choice.component";
 import {TestComponent} from "./components/test.component";
+import {AiAgentComponent} from "./components/ai-agent.component";
 
 const viewOptions = {
     nodes:{
@@ -40,6 +41,10 @@ const viewOptions = {
         [ACTION_TEST]:{
             parent:SELECTABLE,
             component:TestComponent
+        },
+        [ACTION_AI]:{
+            parent:SELECTABLE,
+            component:AiAgentComponent
         }
     },
     edges:{
